@@ -18,6 +18,7 @@ var playState = {
 
     // Init
     game.stage.backgroundColor = "#000000";
+    shadow = true;
 
     // Music
     guessMusic = game.add.audio('guess');
@@ -119,7 +120,9 @@ if ( shadow ) {
     revealMusic.play();
 
   } else {
-      window.location.reload()
+      //window.location.reload()
+      revealMusic.stop();
+      game.state.start('play');
   }
 
 }
