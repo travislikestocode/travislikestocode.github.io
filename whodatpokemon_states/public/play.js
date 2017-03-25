@@ -25,6 +25,9 @@ var playState = {
     revealMusic = game.add.audio('reveal');
     guessMusic.play();
 
+
+
+
     // starburst
     starburst = game.add.sprite(380, 320, 'starburst');
     starburst.anchor.setTo(0.5, 0.5);
@@ -32,10 +35,13 @@ var playState = {
     starburst.alpha = 0.85;
 
     //PokeBall
-    pokeball = game.add.sprite(0, 0, 'pokeball');
+    /*pokeball = game.add.sprite(0, 0, 'pokeball');
     pokeball.anchor.setTo(0.5, 0.5);
     pokeball.scale.setTo(5, 5);
     pokeball.angle = 190;
+    pokeballSound = game.add.audio('pokeballSound');
+    pokeballSound.volume = 0.5;
+    //pokeballSound.play();*/
 
     // Pokemon Sprite
     pokemonSprite = game.add.sprite(1280, 720, 'pokemonSprite');
@@ -64,28 +70,69 @@ var playState = {
     whoText.anchor.set(0.5, 0.5);
     whoText.alpha = 0;
 
+    // Big Pokeball
+    bigPokeballTop = game.add.sprite(640, 360, 'bigPokeballtop');
+    bigPokeballTop.anchor.setTo(0.5, 0.5);
+    bigPokeballTop.scale.setTo( 1, 1);
+    bigPokeballTop.angle = 180;
+
+    // Big Pokeball
+    bigPokeballBottom = game.add.sprite(640, 360, 'bigPokeballBottom');
+    bigPokeballBottom.anchor.setTo(0.5, 0.5);
+    bigPokeballBottom.scale.setTo( 1, 1);
+    bigPokeballBottom.angle = 180;
+
     // async tweens
-    game.add.tween(pokeball).to( { x: 380, y: 200 }, 300, Phaser.Easing.Quartic.InOut, true);
-    game.add.tween(pokeball).to( { angle: 45 }, 500, Phaser.Easing.Linear.None, true);
+    //game.add.tween(pokeball).to( { x: 380, y: 200 }, 300, Phaser.Easing.Quartic.InOut, true);
+    //game.add.tween(pokeball).to( { angle: 45 }, 500, Phaser.Easing.Linear.None, true);
     game.add.tween(whoText).to({alpha:1}, 300, Phaser.Easing.Quartic.InOut, true);
 
+    // Big Pokeball Opening
+    // Top
+    pballTopRotate = game.add.tween(bigPokeballTop).to({angle:0}, 1000, Phaser.Easing.Quartic.InOut);
+    pballTopMove = game.add.tween(bigPokeballTop).to( { y: -1500}, 1000, Phaser.Easing.Quartic.InOut);
+
+    // Bottom
+    pballBottomRotate = game.add.tween(bigPokeballBottom).to({angle:0}, 1000, Phaser.Easing.Quartic.InOut);
+    pballBottomMove = game.add.tween(bigPokeballBottom).to( { y: 1500}, 1000, Phaser.Easing.Quartic.InOut);
+
+    pballTopRotate.chain(pballTopMove);
+    pballBottomRotate.chain(pballBottomMove);
+
+    pballTopRotate.start();
+    pballBottomRotate.start();
+
+    // Big Pokeball Closing
+    pballTopBack = game.add.tween(bigPokeballTop).to( { y: 360}, 1000, Phaser.Easing.Quartic.InOut);
+    pballBottomBack = game.add.tween(bigPokeballBottom).to( { y: 360}, 1000, Phaser.Easing.Quartic.InOut);
+
+    // Then Rotating
+    pballTopRotateBack = game.add.tween(bigPokeballTop).to( {angle:180}, 1000, Phaser.Easing.Quartic.InOut);
+    pballBottomRotateBack = game.add.tween(bigPokeballBottom).to( {angle:180}, 1000, Phaser.Easing.Quartic.InOut);
+
+    pballTopBack.chain(pballTopRotateBack);
+    pballBottomBack.chain(pballBottomRotateBack);
+
+
     // sync tweens
-    tweenA = game.add.tween(pokeball.scale).to( { x: .1, y: 0.1}, 200, Phaser.Easing.Quartic.InOut);
-    tweenB = game.add.tween(pokeball).to({alpha:0}, 1,Phaser.Easing.None);
+    //tweenA = game.add.tween(pokeball.scale).to( { x: .1, y: 0.1}, 200, Phaser.Easing.Quartic.InOut);
+    //tweenB = game.add.tween(pokeball).to({alpha:0}, 1,Phaser.Easing.None);
     tweenC = game.add.tween(bigPokemon).to({alpha:1}, 1,Phaser.Easing.None);
     tweenE = game.add.tween(bigPokemon.scale).to( { x: -.8, y: .8}, 150, Phaser.Easing.Quartic.InOut);
     tweenD = game.add.tween(starburst.scale).to( { x: .8, y: .8}, 700, Phaser.Easing.Quartic.InOut);
 
 
-    tweenA.chain(tweenB);
-    tweenB.chain(tweenC);
+    //tweenA.chain(tweenB);
+    //tweenB.chain(tweenC);
     tweenC.chain(tweenD);
     tweenD.chain(tweenE);
     //tweenE.chain(tweenF);
-    tweenA.start();
+    tweenC.start();
 
     // Unhide
     game.input.onDown.add(mouseDown);
+
+
 
   },
 
@@ -122,7 +169,8 @@ if ( shadow ) {
   } else {
       //window.location.reload()
       revealMusic.stop();
+      pballTopBack.start();
+      pballBottomBack.start();
       game.state.start('play');
   }
-
 }

@@ -10,6 +10,7 @@ var guessMusic
 var revealMusic
 var whoText
 var revealText
+var loadText
 
 // Call each state
 game.state.add('boot', bootState);
