@@ -71,16 +71,16 @@ var playState = {
     whoText.alpha = 0;
 
     // Big Pokeball
-    bigPokeballTop = game.add.sprite(640, 360, 'bigPokeballtop');
-    bigPokeballTop.anchor.setTo(0.5, 0.5);
-    bigPokeballTop.scale.setTo( 1, 1);
-    bigPokeballTop.angle = 180;
-
-    // Big Pokeball
     bigPokeballBottom = game.add.sprite(640, 360, 'bigPokeballBottom');
     bigPokeballBottom.anchor.setTo(0.5, 0.5);
     bigPokeballBottom.scale.setTo( 1, 1);
     bigPokeballBottom.angle = 180;
+
+    // Big Pokeball
+    bigPokeballTop = game.add.sprite(640, 360, 'bigPokeballtop');
+    bigPokeballTop.anchor.setTo(0.5, 0.5);
+    bigPokeballTop.scale.setTo( 1, 1);
+    bigPokeballTop.angle = 180;
 
     // async tweens
     //game.add.tween(pokeball).to( { x: 380, y: 200 }, 300, Phaser.Easing.Quartic.InOut, true);
