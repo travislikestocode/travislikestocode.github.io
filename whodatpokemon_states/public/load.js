@@ -22,7 +22,17 @@ var loadState = {
   },
 
   create: function() {
-    game.state.start('play');
+
+    bigPokeball = game.add.sprite(640, 360, 'bigPokeball');
+    bigPokeball.anchor.setTo(0.5, 0.5);
+    bigPokeball.scale.setTo( 0.1, 0.1);
+
+    pballSizeTween = game.add.tween(bigPokeball.scale).to({x: 1, y:1}, 1000, Phaser.Easing.Quartic.InOut);
+    pballRotateTween = game.add.tween(bigPokeball).to({angle: 180}, 1000, Phaser.Easing.Quartic.InOut, true);
+    pballSizeTween.start();
+    //pballRotateTween.start();
+
+    pballRotateTween.onComplete.add(startGame, this);
   }
 };
 
@@ -32,4 +42,8 @@ function generatePokemonIndex(min, max) {
 
 function bigPokemonFilename() {
   return "db/img/" + pokedex[pokemonIndex].id + pokedex[pokemonIndex].ename + ".png";
+}
+
+function startGame() {
+  game.state.start('play');
 }

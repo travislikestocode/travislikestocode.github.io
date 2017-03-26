@@ -70,8 +70,7 @@ var playState = {
     bigPokemon = game.add.sprite(380, 320, 'bigPokemon');
     gameSprites.add(bigPokemon);
     bigPokemonProperties();
-
-
+    
     // Who's that Pokemon?
     whoText = game.add.text(750, 350, "Who's that \nPokemon?", { fill: '#000000', fontSize: 40 });
     gameSprites.add(whoText);
