@@ -12,6 +12,10 @@ var whoText
 var revealText
 var loadText
 
+// Sprite groups
+var uiSprites
+var gameSprites
+
 // Call each state
 game.state.add('boot', bootState);
 game.state.add('load', loadState);

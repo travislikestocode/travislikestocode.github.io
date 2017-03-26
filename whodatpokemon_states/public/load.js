@@ -1,8 +1,14 @@
 var loadState = {
 
   preload: function() {
-    console.log("loading");
-    game.load.json('pokedex', 'db/pokedex.json');
+
+    // Random Pokemon
+    pokemonIndex = generatePokemonIndex(0, 400);
+
+    // Initialize the Pokedex
+    pokedex = game.cache.getJSON('pokedex');
+
+    game.load.image('bigPokemon', bigPokemonFilename());
     game.load.image('bg', 'assets/whodat.png');
     game.load.image('pokeball', 'assets/pokeball.png');
     game.load.image('starburst', 'assets/starburst.png');
@@ -16,20 +22,14 @@ var loadState = {
   },
 
   create: function() {
-
-    pokedex = game.cache.getJSON('pokedex');
     game.state.start('play');
-
-    game.load.onLoadStart.add(loadStart, this);
-
-    text = game.add.text(32, 32, 'Click to start load', { fill: '#ffffff' });
-
   }
-
 };
 
-function loadStart() {
+function generatePokemonIndex(min, max) {
+  return Math.floor(Math.random() * (max - min));
+}
 
-  text.setText("Loading ...");
-
+function bigPokemonFilename() {
+  return "db/img/" + pokedex[pokemonIndex].id + pokedex[pokemonIndex].ename + ".png";
 }

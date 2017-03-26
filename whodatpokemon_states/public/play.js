@@ -2,11 +2,14 @@ var playState = {
 
   preload: function() {
 
-    pokemonIndex = generatePokemonIndex(0, 400);
+
     spriteFrame = pmonLookup(pokemonIndex);
 
+    gameSprites = game.add.group();
+    uiSprites = game.add.group();
+
     // Load assets
-    game.load.image('bigPokemon', bigPokemonFilename());
+
 
     // Debug
     //var text = game.add.text(0, 0, bigPokemonFilename(), { fill: '#ffffff' });
@@ -25,11 +28,18 @@ var playState = {
     revealMusic = game.add.audio('reveal');
     guessMusic.play();
 
+    // Big Pokeball
+    bigPokeballTop = game.add.sprite(640, 360, 'bigPokeballtop');
+    //uiSprites.add(bigPokeballTop);
+    bigPokeballTop.anchor.setTo(0.5, 0.5);
+    bigPokeballTop.scale.setTo( 1, 1);
+    bigPokeballTop.angle = 180;
 
 
 
     // starburst
     starburst = game.add.sprite(380, 320, 'starburst');
+    gameSprites.add(starburst);
     starburst.anchor.setTo(0.5, 0.5);
     starburst.scale.setTo(0, 0);
     starburst.alpha = 0.85;
@@ -45,6 +55,7 @@ var playState = {
 
     // Pokemon Sprite
     pokemonSprite = game.add.sprite(1280, 720, 'pokemonSprite');
+    gameSprites.add(pokemonSprite);
     pokemonSprite.anchor.set(1, 1);
     pokemonSprite.smoothed = false;
     pokemonSprite.frame = spriteFrame;
@@ -54,33 +65,27 @@ var playState = {
     // Hidden with Shadow
     pokemonSprite.scale.setTo( 1, 1);
     pokemonSprite.tint = 0x000000;
-    pokemonSprite.alpha = 1;
 
     // Big Pokemon Image
     bigPokemon = game.add.sprite(380, 320, 'bigPokemon');
-    bigPokemon.anchor.set(0.5, 0.5);
-    bigPokemon.smoothed = false;
-    bigPokemon.scale.setTo( 0, 0);
-    bigPokemon.tint = 0x000000;
-    bigPokemon.frame = pmonLookup(pokemonIndex)
-    bigPokemon.alpha = 0
+    gameSprites.add(bigPokemon);
+    bigPokemonProperties();
+
 
     // Who's that Pokemon?
     whoText = game.add.text(750, 350, "Who's that \nPokemon?", { fill: '#000000', fontSize: 40 });
+    gameSprites.add(whoText);
     whoText.anchor.set(0.5, 0.5);
     whoText.alpha = 0;
 
     // Big Pokeball
     bigPokeballBottom = game.add.sprite(640, 360, 'bigPokeballBottom');
+    uiSprites.add(bigPokeballBottom);
     bigPokeballBottom.anchor.setTo(0.5, 0.5);
     bigPokeballBottom.scale.setTo( 1, 1);
     bigPokeballBottom.angle = 180;
 
-    // Big Pokeball
-    bigPokeballTop = game.add.sprite(640, 360, 'bigPokeballtop');
-    bigPokeballTop.anchor.setTo(0.5, 0.5);
-    bigPokeballTop.scale.setTo( 1, 1);
-    bigPokeballTop.angle = 180;
+
 
     // async tweens
     //game.add.tween(pokeball).to( { x: 380, y: 200 }, 300, Phaser.Easing.Quartic.InOut, true);
@@ -102,16 +107,14 @@ var playState = {
     pballTopRotate.start();
     pballBottomRotate.start();
 
-    // Big Pokeball Closing
-    pballTopBack = game.add.tween(bigPokeballTop).to( { y: 360}, 1000, Phaser.Easing.Quartic.InOut);
-    pballBottomBack = game.add.tween(bigPokeballBottom).to( { y: 360}, 1000, Phaser.Easing.Quartic.InOut);
 
-    // Then Rotating
-    pballTopRotateBack = game.add.tween(bigPokeballTop).to( {angle:180}, 1000, Phaser.Easing.Quartic.InOut);
-    pballBottomRotateBack = game.add.tween(bigPokeballBottom).to( {angle:180}, 1000, Phaser.Easing.Quartic.InOut);
 
-    pballTopBack.chain(pballTopRotateBack);
-    pballBottomBack.chain(pballBottomRotateBack);
+    // Big Pokeball Closing - Rotate
+    //pballTopRotateBack = game.add.tween(bigPokeballTop).to( {angle:180}, 1000, Phaser.Easing.Quartic.InOut);
+    //pballBottomRotateBack = game.add.tween(bigPokeballBottom).to( {angle:180}, 1000, Phaser.Easing.Quartic.InOut);
+
+    //pballTopBack.chain(pballTopRotateBack);
+    //pballBottomBack.chain(pballBottomRotateBack);
 
 
     // sync tweens
@@ -132,7 +135,7 @@ var playState = {
     // Unhide
     game.input.onDown.add(mouseDown);
 
-
+    game.load.onLoadComplete.add(loadComplete, this);
 
   },
 
@@ -161,6 +164,7 @@ if ( shadow ) {
     pokemonSprite.tint = 0xffffff;
     whoText.alpha = 0;
     revealText = game.add.text(750, 350, "It's " + pokedex[pokemonIndex].ename + "!", { fill: '#ffffff', fontSize: 40 });
+    gameSprites.add(revealText);
     revealText.anchor.set(0.5, 0.5);
     shadow = false;
     guessMusic.stop();
@@ -168,9 +172,83 @@ if ( shadow ) {
 
   } else {
       //window.location.reload()
-      revealMusic.stop();
+      //pballTopBack.start();
+      //pballBottomBack.start();
+      //game.state.start('play');
+
+
+
+      // Big Pokeball Closing - Move
+
+      // Hack for making the pokeball go on top of the result text
+      //bigPokeballTop.kill();
+      //bigPokeballTop = game.add.sprite(640, -1500, 'bigPokeballtop');
+      //bigPokeballTop.anchor.setTo(0.5, 0.5);
+      //bigPokeballTop.scale.setTo( 1, 1);
+
+
+      pballTopBack = game.add.tween(bigPokeballTop).to( { y: 360}, 1000, Phaser.Easing.Quartic.InOut);
+      pballBottomBack = game.add.tween(bigPokeballBottom).to( { y: 360}, 1000, Phaser.Easing.Quartic.InOut);
+
       pballTopBack.start();
       pballBottomBack.start();
-      game.state.start('play');
+
+      pballTopBack.onComplete.add(reloadPokemon, this);
+
+      //reloadBigPokemon();
   }
+}
+
+function reloadPokemon() {
+
+    console.log("sup");
+
+    // Generate new index
+    pokemonIndex = generatePokemonIndex(0, 400);
+    spriteFrame = pmonLookup(pokemonIndex);
+
+    console.log("index: " + pokemonIndex + "| spriteframe: " + spriteFrame)
+
+    game.load.image('bigPokemon', bigPokemonFilename());
+    game.load.start();
+
+    pokemonSprite.animations.add('dance', [spriteFrame, (spriteFrame + 1)], 5, true);
+    pokemonSprite.animations.play('dance');
+    pokemonSprite.tint = 0x000000;
+
+
+
+}
+
+function bigPokemonProperties() {
+
+    bigPokemon.anchor.set(0.5, 0.5);
+    bigPokemon.smoothed = false;
+    bigPokemon.scale.setTo( 0, 0);
+    bigPokemon.tint = 0x000000;
+    bigPokemon.frame = pmonLookup(pokemonIndex)
+    bigPokemon.alpha = 0
+
+}
+
+function loadComplete() {
+    console.log('loadComplete');
+    bigPokemon.kill();
+    bigPokemon = game.add.sprite(380, 320, 'bigPokemon');
+    gameSprites.add(bigPokemon);
+    bigPokemon.anchor.set(0.5, 0.5);
+    bigPokemon.tint = 0x000000;
+    revealText.alpha = 0;
+    whoText.alpha = 1;
+    shadow = true;
+    revealMusic.stop();
+    guessMusic.play();
+    openPokeball();
+}
+
+function openPokeball() {
+    pballTopMove = game.add.tween(bigPokeballTop).to( { y: -1500}, 1000, Phaser.Easing.Quartic.InOut);
+    pballBottomMove = game.add.tween(bigPokeballBottom).to( { y: 1500}, 1000, Phaser.Easing.Quartic.InOut);
+    pballTopMove.start();
+    pballBottomMove.start();
 }
