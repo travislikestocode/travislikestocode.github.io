@@ -3,7 +3,7 @@ var loadState = {
   preload: function() {
 
     // Random Pokemon
-    pokemonIndex = generatePokemonIndex(0, 400);
+    pokemonIndex = generatePokemonIndex(minPokemon, maxPokemon);
 
     // Initialize the Pokedex
     pokedex = game.cache.getJSON('pokedex');
@@ -36,13 +36,6 @@ var loadState = {
   }
 };
 
-function generatePokemonIndex(min, max) {
-  return Math.floor(Math.random() * (max - min));
-}
-
-function bigPokemonFilename() {
-  return "db/img/" + pokedex[pokemonIndex].id + pokedex[pokemonIndex].ename + ".png";
-}
 
 function startGame() {
   game.state.start('play');
