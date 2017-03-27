@@ -245,7 +245,6 @@ function loadComplete() {
     shadow = true;
     revealMusic.stop();
     guessMusic.play();
-    clickLock = false;
     openPokeball();
 }
 
@@ -254,4 +253,10 @@ function openPokeball() {
     pballBottomMove = game.add.tween(bigPokeballBottom).to( { y: 1500}, 1000, Phaser.Easing.Quartic.InOut);
     pballTopMove.start();
     pballBottomMove.start();
+
+    pballTopMove.onComplete.add(removeClickLock, this);
+}
+
+function removeClickLock() {
+    clickLock = false;
 }
