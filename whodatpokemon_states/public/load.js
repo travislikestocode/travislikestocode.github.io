@@ -2,9 +2,13 @@ var loadState = {
 
   preload: function() {
 
+    // Loading message
+    preloadText = game.add.text(630, 500, "Loading...", { fill: '#ffffff', fontSize: 20 });
+
     // Random Pokemon
     pokemonIndex = generatePokemonIndex(minPokemon, maxPokemon);
     spriteFrame = pmonLookup(pokemonIndex);
+
     // Initialize the Pokedex
     pokedex = game.cache.getJSON('pokedex');
 
@@ -19,24 +23,43 @@ var loadState = {
     game.load.audio('reveal', 'assets/reveal1.mp3');
     game.load.audio('pokeballSound', 'assets/pokeball.mp3');
 
+    // Load hooks
+    game.load.onFileComplete.add(preloadFileComplete, this);
+    game.load.onLoadComplete.add(preloadCompleted, this);
+
   },
 
   create: function() {
 
-    bigPokeball = game.add.sprite(640, 360, 'bigPokeball');
-    bigPokeball.anchor.setTo(0.5, 0.5);
-    bigPokeball.scale.setTo( 0.1, 0.1);
+  game.stage.backgroundColor = "#000000";
 
-    pballSizeTween = game.add.tween(bigPokeball.scale).to({x: 1, y:1}, 1000, Phaser.Easing.Quartic.InOut);
-    pballRotateTween = game.add.tween(bigPokeball).to({angle: 180}, 1000, Phaser.Easing.Quartic.InOut, true);
-    pballSizeTween.start();
-    //pballRotateTween.start();
+}
 
-    pballRotateTween.onComplete.add(startGame, this);
-  }
 };
 
+function preloadFileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
 
-function startGame() {
-  game.state.start('play');
+    if (!preloadComplete) {
+      loadSprite = game.add.sprite(560, 280, 'snorlax');
+      loadSprite.animations.add('dance', [0, 1], 5, true);
+      loadSprite.smoothed = false;
+      loadSprite.scale.setTo(3, 3);
+      //loadSprite.animations.play('dance');
+      loadSprite.frame = 0
+
+      cropRect = new Phaser.Rectangle(0, 0, progress, loadSprite.height);
+      console.log(cropRect);
+      loadSprite.crop(cropRect);
+    }
+
+}
+
+function preloadCompleted() {
+
+    if (!preloadComplete) {
+      console.log("preload done");
+      preloadComplete = true
+      game.state.start('play');
+    }
+
 }

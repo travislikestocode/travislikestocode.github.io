@@ -15,6 +15,7 @@ var whoText;
 var revealText;
 var loadText;
 var clickLock = false;
+var preloadComplete = false;
 
 // Sprite groups
 var uiSprites;

@@ -2,7 +2,7 @@ var bootState = {
 
     preload: function() {
       game.load.json('pokedex', 'db/pokedex.json');
-      game.load.image('bigPokeball', 'assets/bigpokeball.png')
+      game.load.spritesheet('snorlax', 'assets/snorlax.png', 80, 80);
     },
 
     create: function() {
