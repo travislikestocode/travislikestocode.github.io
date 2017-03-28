@@ -4,6 +4,15 @@ var loadState = {
 
     // Loading message
     preloadText = game.add.text(630, 500, "Loading...", { fill: '#ffffff', fontSize: 20 });
+    loadSprite = game.add.sprite(560, 280, 'snorlax');
+    loadSprite.animations.add('dance', [0, 1], 2, true);
+    loadSprite.smoothed = false;
+    loadSprite.scale.setTo(3, 3);
+    loadSprite.animations.play('dance');
+    //loadSprite.frame = 1
+
+    cropRect = new Phaser.Rectangle(0, 0, 0, loadSprite.height)
+    loadSprite.crop(cropRect);
 
     // Random Pokemon
     pokemonIndex = generatePokemonIndex(minPokemon, maxPokemon);
@@ -18,6 +27,7 @@ var loadState = {
     game.load.image('starburst', 'assets/starburst.png');
     game.load.image('bigPokeballtop', 'assets/bigpokeballtop.png');
     game.load.image('bigPokeballBottom', 'assets/bigpokeballbottom.png');
+    game.load.image('blackdot', 'assets/black.png');
     game.load.spritesheet('pokemonSprite', 'assets/pokemon.png', 80, 80);
     game.load.audio('guess', 'assets/guess1.mp3');
     game.load.audio('reveal', 'assets/reveal1.mp3');
@@ -40,16 +50,11 @@ var loadState = {
 function preloadFileComplete(progress, cacheKey, success, totalLoaded, totalFiles) {
 
     if (!preloadComplete) {
-      loadSprite = game.add.sprite(560, 280, 'snorlax');
-      loadSprite.animations.add('dance', [0, 1], 5, true);
-      loadSprite.smoothed = false;
-      loadSprite.scale.setTo(3, 3);
-      //loadSprite.animations.play('dance');
-      loadSprite.frame = 0
 
+      // Adjust load sprite mask to reflect progress
       cropRect = new Phaser.Rectangle(0, 0, progress, loadSprite.height);
-      console.log(cropRect);
       loadSprite.crop(cropRect);
+
     }
 
 }
@@ -57,7 +62,6 @@ function preloadFileComplete(progress, cacheKey, success, totalLoaded, totalFile
 function preloadCompleted() {
 
     if (!preloadComplete) {
-      console.log("preload done");
       preloadComplete = true
       game.state.start('play');
     }

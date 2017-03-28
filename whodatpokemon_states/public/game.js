@@ -16,6 +16,8 @@ var revealText;
 var loadText;
 var clickLock = false;
 var preloadComplete = false;
+var loadSprite
+var cropRect
 
 // Sprite groups
 var uiSprites;

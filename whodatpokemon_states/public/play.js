@@ -70,22 +70,34 @@ var playState = {
     bigPokeballBottom.scale.setTo( 1, 1);
     bigPokeballBottom.angle = 180;
 
+    // Dummy sprites for intro delay
+    dummyA = game.add.sprite(-100, -100, 'blackdot');
+    dummyB = game.add.sprite(-200, -200, 'blackdot');
+
+    // Dummy tween to give the game a second to catch up after loading
+    dummyTweenA = game.add.tween(dummyA).to({y: -200}, 750, Phaser.Easing.None);
+    dummyTweenB = game.add.tween(dummyB).to({y: -100}, 750, Phaser.Easing.None);
+
+
     // Big Pokeball Opening
     // Top
-    pballTopRotate = game.add.tween(bigPokeballTop).to({angle:0}, 750, Phaser.Easing.Quartic.InOut);
+    pballTopRotate = game.add.tween(bigPokeballTop).to({angle:0}, 1000, Phaser.Easing.Quartic.InOut);
     pballTopMove = game.add.tween(bigPokeballTop).to( { y: -300}, 750, Phaser.Easing.Quartic.InOut);
 
     pballTopMove.onComplete.add(removeClickLock, this);
 
     // Bottom
-    pballBottomRotate = game.add.tween(bigPokeballBottom).to({angle:0}, 750, Phaser.Easing.Quartic.InOut);
+    pballBottomRotate = game.add.tween(bigPokeballBottom).to({angle:0}, 1000, Phaser.Easing.Quartic.InOut);
     pballBottomMove = game.add.tween(bigPokeballBottom).to( { y: 750}, 750, Phaser.Easing.Quartic.InOut);
+
+    dummyTweenA.chain(pballTopRotate);
+    dummyTweenB.chain(pballBottomRotate);
 
     pballTopRotate.chain(pballTopMove);
     pballBottomRotate.chain(pballBottomMove);
 
-    pballTopRotate.start();
-    pballBottomRotate.start();
+    dummyTweenA.start();
+    dummyTweenB.start();
 
     // Unhide
     game.input.onDown.add(mouseDown);
