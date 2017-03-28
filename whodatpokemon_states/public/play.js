@@ -72,14 +72,14 @@ var playState = {
 
     // Big Pokeball Opening
     // Top
-    pballTopRotate = game.add.tween(bigPokeballTop).to({angle:0}, 1000, Phaser.Easing.Quartic.InOut);
-    pballTopMove = game.add.tween(bigPokeballTop).to( { y: -1500}, 1000, Phaser.Easing.Quartic.InOut);
+    pballTopRotate = game.add.tween(bigPokeballTop).to({angle:0}, 750, Phaser.Easing.Quartic.InOut);
+    pballTopMove = game.add.tween(bigPokeballTop).to( { y: -300}, 750, Phaser.Easing.Quartic.InOut);
 
     pballTopMove.onComplete.add(removeClickLock, this);
 
     // Bottom
-    pballBottomRotate = game.add.tween(bigPokeballBottom).to({angle:0}, 1000, Phaser.Easing.Quartic.InOut);
-    pballBottomMove = game.add.tween(bigPokeballBottom).to( { y: 1500}, 1000, Phaser.Easing.Quartic.InOut);
+    pballBottomRotate = game.add.tween(bigPokeballBottom).to({angle:0}, 750, Phaser.Easing.Quartic.InOut);
+    pballBottomMove = game.add.tween(bigPokeballBottom).to( { y: 750}, 750, Phaser.Easing.Quartic.InOut);
 
     pballTopRotate.chain(pballTopMove);
     pballBottomRotate.chain(pballBottomMove);
@@ -191,8 +191,8 @@ function loadComplete() {
 }
 
 function openPokeball() {
-    pballTopMove = game.add.tween(bigPokeballTop).to( { y: -1500}, 1000, Phaser.Easing.Quartic.InOut);
-    pballBottomMove = game.add.tween(bigPokeballBottom).to( { y: 1500}, 1000, Phaser.Easing.Quartic.InOut);
+    pballTopMove = game.add.tween(bigPokeballTop).to( { y: -300}, 750, Phaser.Easing.Quartic.InOut);
+    pballBottomMove = game.add.tween(bigPokeballBottom).to( { y: 750}, 750, Phaser.Easing.Quartic.InOut);
     pballTopMove.start();
     pballBottomMove.start();
 
