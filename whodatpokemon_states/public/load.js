@@ -4,7 +4,7 @@ var loadState = {
 
     // Random Pokemon
     pokemonIndex = generatePokemonIndex(minPokemon, maxPokemon);
-
+    spriteFrame = pmonLookup(pokemonIndex);
     // Initialize the Pokedex
     pokedex = game.cache.getJSON('pokedex');
 
